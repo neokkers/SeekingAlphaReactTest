@@ -25,7 +25,6 @@ export const getLivingNeighboursCount = (
     if (columnIdx > 0) {
       neighbours.push(array[rowIdx + 1][columnIdx - 1]);
     }
-    // console.log(rowIdx, columnIdx);
     neighbours.push(array[rowIdx + 1][columnIdx]);
 
     if (columnIdx < array[rowIdx].length - 1) {
@@ -37,7 +36,7 @@ export const getLivingNeighboursCount = (
 };
 
 export const calculateRows = (rows: number[][]) => {
-  console.log("RECALCULATING");
+  console.log("calculatingRows");
   const rowsNew = (rows as Array<number[]>).map((row, rowIdx) => {
     return (row as Array<number>).map((cell, columnIdx) => {
       const livingNeighbours = getLivingNeighboursCount(
