@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Cell } from "../Cell/Cell";
 import "./Grid.scss";
-import { getLivingNeighboursCount } from "./utils";
+import { calculateRows } from "./utils";
 
 interface Props {
   tickTime: number;
@@ -12,8 +12,6 @@ interface Props {
 const generateKey = (idx: number) => {
   return `${idx}_${new Date().getTime()}`;
 };
-
-// const areEqual<> = (prevProps, nextProps) => true;
 
 export const Grid: React.FC<Props> = ({
   tickTime,
@@ -38,8 +36,6 @@ export const Grid: React.FC<Props> = ({
       }
     }
     setRows(rowsNew);
-    console.log(rowsNew);
-    // calculateRows(rowsNew);
   }, [numberOfRows, numberOfColumns]);
 
   useEffect(() => {
@@ -49,45 +45,24 @@ export const Grid: React.FC<Props> = ({
    * End random init
    * */
 
-  // Calculate new rows
-  const calculateRows = (
-    rows: number[][],
-    setRows: (rows: number[][]) => void
-  ) => {
-    console.log("RECALCULATE ", rows);
-    const rowsNew = (rows as Array<number[]>).map((row, rowIdx) => {
-      return (row as Array<number>).map((cell, columnIdx) => {
-        const livingNeighbours = getLivingNeighboursCount(
-          rows,
-          rowIdx,
-          columnIdx
-        );
-        console.log(livingNeighbours);
-        if (livingNeighbours < 2 && cell === 1) return 0;
-        if (livingNeighbours > 3 && cell === 1) return 0;
-        if (livingNeighbours === 3 && cell === 0) return 1;
-        return cell;
-      });
-    });
-    // console.log(rows, rowsNew);
-
-    setRows(rowsNew);
-  };
-
-  const tick = () => {
-    setCurrentTick((currentTick) => currentTick + 1);
-  };
-
+  /**
+   * Start ticking (based on currentTick state)
+   * */
   useEffect(() => {
-    if (currentTick > 0) calculateRows(rows, setRows);
-  }, [currentTick]);
-
-  useEffect(() => {
-    const interval = setInterval(tick, tickTime);
+    const interval = setInterval(() => {
+      setCurrentTick((currentTick) => currentTick + 1);
+    }, tickTime);
     return () => {
       clearInterval(interval);
     };
   }, [tickTime]);
+
+  useEffect(() => {
+    if (currentTick > 0) calculateRows(rows, setRows);
+  }, [currentTick]);
+  /**
+   * End ticking
+   * */
 
   const gridStyles = {
     gridTemplateColumns: `repeat(${numberOfColumns}, 10px)`,
@@ -97,9 +72,13 @@ export const Grid: React.FC<Props> = ({
   return (
     <div className={"Grid"} style={gridStyles}>
       {rows.map((row, rowIdx) => (
-        <React.Fragment key={generateKey(rowIdx)}>
+        /**
+         * Key props use index by default,
+         * but in our case it's fine (I hope :) )
+         * */
+        <React.Fragment key={rowIdx}>
           {row.map((cell, columnIdx) => (
-            <Cell alive={!!cell} key={generateKey(columnIdx)} />
+            <Cell alive={!!cell} key={columnIdx} />
           ))}
         </React.Fragment>
       ))}

@@ -35,3 +35,25 @@ export const getLivingNeighboursCount = (
 
   return neighbours.filter((el) => el === 1).length;
 };
+
+export const calculateRows = (
+  rows: number[][],
+  setRows: (rows: number[][]) => void
+) => {
+  console.log("RECALCULATING");
+  const rowsNew = (rows as Array<number[]>).map((row, rowIdx) => {
+    return (row as Array<number>).map((cell, columnIdx) => {
+      const livingNeighbours = getLivingNeighboursCount(
+        rows,
+        rowIdx,
+        columnIdx
+      );
+      if (livingNeighbours < 2 && cell === 1) return 0;
+      if (livingNeighbours > 3 && cell === 1) return 0;
+      if (livingNeighbours === 3 && cell === 0) return 1;
+      return cell;
+    });
+  });
+
+  setRows(rowsNew);
+};
