@@ -1,0 +1,9 @@
+.Cell {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #333;
+  background: #333;
+  &.dead {
+      background: aliceblue;
+  }
+}
