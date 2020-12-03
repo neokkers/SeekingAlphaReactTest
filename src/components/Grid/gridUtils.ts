@@ -36,10 +36,7 @@ export const getLivingNeighboursCount = (
   return neighbours.filter((el) => el === 1).length;
 };
 
-export const calculateRows = (
-  rows: number[][],
-  setRows: (rows: number[][]) => void
-) => {
+export const calculateRows = (rows: number[][]) => {
   console.log("RECALCULATING");
   const rowsNew = (rows as Array<number[]>).map((row, rowIdx) => {
     return (row as Array<number>).map((cell, columnIdx) => {
@@ -55,5 +52,5 @@ export const calculateRows = (
     });
   });
 
-  setRows(rowsNew);
+  return rowsNew;
 };

@@ -1,17 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Cell } from "../Cell/Cell";
 import "./Grid.scss";
-import { calculateRows } from "./utils";
+import { calculateRows } from "./gridUtils";
 
 interface Props {
   tickTime: number;
   numberOfRows: number;
   numberOfColumns: number;
 }
-
-const generateKey = (idx: number) => {
-  return `${idx}_${new Date().getTime()}`;
-};
 
 export const Grid: React.FC<Props> = ({
   tickTime,
@@ -48,6 +44,8 @@ export const Grid: React.FC<Props> = ({
   /**
    * Start ticking (based on currentTick state)
    * */
+
+  // init
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTick((currentTick) => currentTick + 1);
@@ -57,8 +55,9 @@ export const Grid: React.FC<Props> = ({
     };
   }, [tickTime]);
 
+  // ticking
   useEffect(() => {
-    if (currentTick > 0) calculateRows(rows, setRows);
+    if (currentTick > 0) setRows(calculateRows(rows));
   }, [currentTick]);
   /**
    * End ticking
@@ -73,7 +72,7 @@ export const Grid: React.FC<Props> = ({
     <div className={"Grid"} style={gridStyles}>
       {rows.map((row, rowIdx) => (
         /**
-         * Key props use index by default,
+         * Key props use indexes by default,
          * but in our case it's fine (I hope :) )
          * */
         <React.Fragment key={rowIdx}>
