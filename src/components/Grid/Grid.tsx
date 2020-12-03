@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Cell } from "../Cell/Cell";
 import "./Grid.scss";
-import { calculateRows } from "./gridUtils";
+import { calculateRows, getOriginalState } from "./gridUtils";
 
 interface Props {
   tickTime: number;
@@ -15,28 +15,20 @@ export const Grid: React.FC<Props> = ({
   numberOfColumns,
 }) => {
   const [currentTick, setCurrentTick] = useState(0);
-  const [rows, setRows] = useState<number[][]>([[0]]);
+  const [rows, setRows] = useState<number[][]>([[]]);
 
-  console.log("GRID RENDER -- ", rows);
+  console.log("GRID RENDER -- ");
 
   /**
    * Start random init
    * */
   const randomInit = useCallback(() => {
-    console.log("randomInit called");
-    const rowsNew: number[][] = [[0]];
-    for (let i = 0; i < numberOfRows; i++) {
-      rowsNew[i] = [];
-      for (let j = 0; j < numberOfColumns; j++) {
-        rowsNew[i][j] = Math.random() >= 0.5 ? 1 : 0;
-      }
-    }
-    setRows(rowsNew);
+    setRows(getOriginalState(numberOfRows, numberOfColumns));
   }, [numberOfRows, numberOfColumns]);
 
   useEffect(() => {
     randomInit();
-  }, [randomInit]);
+  }, [randomInit, numberOfRows, numberOfColumns, tickTime]);
   /**
    * End random init
    * */
@@ -44,8 +36,7 @@ export const Grid: React.FC<Props> = ({
   /**
    * Start ticking (based on currentTick state)
    * */
-
-  // init
+  // init interval of ticking
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTick((currentTick) => currentTick + 1);
@@ -55,9 +46,12 @@ export const Grid: React.FC<Props> = ({
     };
   }, [tickTime]);
 
-  // ticking
+  // recalculation
   useEffect(() => {
-    if (currentTick > 0) setRows(calculateRows(rows));
+    const f = () => {
+      setRows((rows) => calculateRows(rows));
+    };
+    if (currentTick > 0) f();
   }, [currentTick]);
   /**
    * End ticking

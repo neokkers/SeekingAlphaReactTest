@@ -1,3 +1,18 @@
+export const getOriginalState = (
+  numberOfRows: number,
+  numberOfColumns: number
+) => {
+  console.log("randomInit called");
+  const rowsNew: number[][] = [[0]];
+  for (let i = 0; i < numberOfRows; i++) {
+    rowsNew[i] = [];
+    for (let j = 0; j < numberOfColumns; j++) {
+      rowsNew[i][j] = Math.random() >= 0.5 ? 1 : 0;
+    }
+  }
+  return rowsNew;
+};
+
 export const getLivingNeighboursCount = (
   array: number[][],
   rowIdx: number,
