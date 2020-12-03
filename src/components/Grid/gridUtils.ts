@@ -2,7 +2,6 @@ export const getOriginalState = (
   numberOfRows: number,
   numberOfColumns: number
 ) => {
-  console.log("randomInit called");
   const rowsNew: number[][] = [[0]];
   for (let i = 0; i < numberOfRows; i++) {
     rowsNew[i] = [];
@@ -51,7 +50,6 @@ export const getLivingNeighboursCount = (
 };
 
 export const calculateRows = (rows: number[][]) => {
-  console.log("calculatingRows");
   const rowsNew = (rows as Array<number[]>).map((row, rowIdx) => {
     return (row as Array<number>).map((cell, columnIdx) => {
       const livingNeighbours = getLivingNeighboursCount(

@@ -43,8 +43,8 @@ export const GridControls: React.FC<Props> = React.memo(
     ];
     return (
       <div className={`GridControls`}>
-        {fields.map(({ placeholder, value, onChange }) => (
-          <div className={"labeled-field"}>
+        {fields.map(({ placeholder, value, onChange, id }) => (
+          <div className={"labeled-field"} key={id}>
             <div className="title">{placeholder}</div>
             <div className="input">
               <input

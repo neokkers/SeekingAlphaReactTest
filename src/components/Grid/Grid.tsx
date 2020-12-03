@@ -17,8 +17,6 @@ export const Grid: React.FC<Props> = ({
   const [currentTick, setCurrentTick] = useState(0);
   const [rows, setRows] = useState<number[][]>([[]]);
 
-  console.log("GRID RENDER -- ");
-
   /**
    * Start random init
    * */
