@@ -64,8 +64,7 @@ export const Grid: React.FC<Props> = ({
     <div className={"Grid"} style={gridStyles}>
       {rows.map((row, rowIdx) => (
         /**
-         * Key props use indexes by default,
-         * but in our case it's fine (I hope :) )
+         * Note: Key props use indexes by default,
          * */
         <React.Fragment key={rowIdx}>
           {row.map((cell, columnIdx) => (

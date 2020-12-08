@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React from "react";
 import "./Cell.scss";
 
 interface Props {
